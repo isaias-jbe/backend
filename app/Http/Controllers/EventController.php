@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\API\ApiMessage;
 use App\Models\Event;
+use App\API\ApiMessage;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -42,8 +42,11 @@ class EventController extends Controller
     {
         $event = $this->event->find($id);
 
-        if (!$event)
-            return response()->json(ApiMessage::error('Evento não encontrado!', 404), 404);
+        if (!$event) {
+            return response()->json(
+                ApiMessage::messageNotFound('Event'), 404
+            );
+        }
 
         return response()->json(['data' => $event], 200);
     }
@@ -61,19 +64,19 @@ class EventController extends Controller
             $this->event->create($request->all());
 
             return response()->json(
-                ApiMessage::success('Evento inserido com sucesso', 201), 201
+                ApiMessage::messageInserOrUpdate('Evento'), 201
             );
 
         }catch (\Exception $exception) {
 
             if (config('app.debug')) {
                 return response()->json(
-                    ApiMessage::error($exception->getMessage(), 01), 500
+                    ApiMessage::messageErrorDbug($exception->getMessage()), 500
                 );
             }
 
             return response()->json(
-                ApiMessage::error('Erro ao realizar a operação', 01), 500
+                ApiMessage::messageErrorServer(), 500
             );
         }
     }
@@ -93,19 +96,19 @@ class EventController extends Controller
             $event->update($request->all());
 
             return response()->json(
-                ApiMessage::success('Evento inserido com sucesso', 201), 201
+                ApiMessage::messageInserOrUpdate('Evento'), 200
             );
 
         }catch (\Exception $exception) {
 
             if (config('app.debug')) {
                 return response()->json(
-                    ApiMessage::error($exception->getMessage(), 02), 500
+                    ApiMessage::messageErrorDbug($exception->getMessage()), 500
                 );
             }
 
             return response()->json(
-                ApiMessage::error('Erro ao realizar a operação', 02), 500
+                ApiMessage::messageErrorServer(), 500
             );
         }
     }
@@ -123,19 +126,19 @@ class EventController extends Controller
             $id->delete();
 
             return response()->json(
-                ApiMessage::success('Evento removido com sucesso', 201), 201
+                ApiMessage::messageDelete('Evento'), 201
             );
 
         }catch (\Exception $exception) {
 
             if (config('app.debug')) {
                 return response()->json(
-                    ApiMessage::error($exception->getMessage(), 03), 500
+                    ApiMessage::messageErrorDbug($exception->getMessage()), 500
                 );
             }
 
             return response()->json(
-                ApiMessage::error('Erro ao realizar a operação', 03), 500
+                ApiMessage::messageErrorServer(), 500
             );
         }
     }

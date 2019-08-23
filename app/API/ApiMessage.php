@@ -9,29 +9,57 @@
 namespace App\API;
 
 
+use PhpParser\Node\Scalar\String_;
+
 class ApiMessage
 {
-    public static function success($message, $code)
+
+    public static function messageInserOrUpdate(String $endpoint) : array
     {
         return [
-            'data' => [
-                'code' => $code,
-                'message' => $message,
+            "data" => [
+                'code' => 200,
+                'message' => "{$endpoint} inserido com sucesso",
             ]
         ];
     }
 
-    /**
-     * @param $message
-     * @param $code
-     * @return array
-     */
-    public static function error($message, $code)
+    public static function messageDelete(String $endpoint) : array
     {
         return [
             'data' => [
-                'code' => $code,
-                'message' => $message,
+                'code' => 200,
+                'message' => "{$endpoint} removido com sucesso",
+            ]
+        ];
+    }
+
+    public static function messageNotFound(String $endpoint) : array
+    {
+        return [
+            'data' => [
+                'code' => 404,
+                'message' => "{$endpoint} não encontrado",
+            ]
+        ];
+    }
+
+    public static function messageErrorServer() : array
+    {
+        return [
+            'data' => [
+                'code' => 500,
+                'message' => 'Ops! Erro ao realizar a operação',
+            ]
+        ];
+    }
+
+    public static function messageErrorDbug(String $message) : array
+    {
+        return [
+            'data' => [
+                'code' => 500,
+                'message' => $message
             ]
         ];
     }
