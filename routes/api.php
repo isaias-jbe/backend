@@ -27,5 +27,11 @@ Route::namespace('Api')->name('api.')->group( function () {
         Route::delete('/{id}', 'UserController@delete')->name('user.delete');
     });
 
+    Route::prefix('/event')->group( function () {
+        Route::get('/', 'EventController@index')->name('event.index');
+        Route::get('/{id}', 'EventController@show')->name('event.show');
+        Route::post('/', 'EventController@store')->name('event.store');
+        Route::put('/{id}', 'EventController@update')->name('event.update');
+        Route::delete('/{id}', 'EventController@delete')->name('event.delete');
+    });
 });
-//resource('/user', 'UserController');

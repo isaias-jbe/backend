@@ -95,6 +95,13 @@ class UserController extends Controller
         try {
 
             $user = $this->user->find($id);
+
+            if (!$user) {
+                return response()->json(
+                    ApiMessage::messageNotFound('Usuário'), 404
+                );
+            }
+
             $user->update($request->all());
 
             return response()->json(

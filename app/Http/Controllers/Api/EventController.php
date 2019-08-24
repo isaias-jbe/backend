@@ -45,7 +45,7 @@ class EventController extends Controller
 
         if (!$event) {
             return response()->json(
-                ApiMessage::messageNotFound('Event'), 404
+                ApiMessage::messageNotFound('Evento'), 404
             );
         }
 
@@ -94,6 +94,13 @@ class EventController extends Controller
         try {
 
             $event = $this->event->find($id);
+
+            if (!$event) {
+                return response()->json(
+                    ApiMessage::messageNotFound('Evento'), 404
+                );
+            }
+
             $event->update($request->all());
 
             return response()->json(
