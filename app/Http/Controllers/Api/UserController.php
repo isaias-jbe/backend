@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Models\User;
 use App\API\ApiMessage;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -60,6 +62,7 @@ class UserController extends Controller
     {
         try {
 
+            $request['password'] = bcrypt($request->input('password'));
             $this->user->create($request->all());
 
             return response()->json(
@@ -92,7 +95,7 @@ class UserController extends Controller
         try {
 
             $user = $this->user->find($id);
-            $user->update($user);
+            $user->update($request->all());
 
             return response()->json(
                 ApiMessage::messageUpdate('Usuário'), 200
@@ -118,11 +121,19 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete(User $id)
+    public function delete($id)
     {
         try {
 
-            $id->delete();
+            $user = $this->user->find($id);
+
+            if (!$user) {
+                return response()->json(
+                    ApiMessage::messageNotFound('Usuário'), 404
+                );
+            }
+
+            $user->delete();
 
             return response()->json(
                 ApiMessage::messageDelete('Usuário'), 200

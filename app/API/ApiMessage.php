@@ -72,7 +72,7 @@ class ApiMessage
         return [
             'data' => [
                 'title' => 'Oops!',
-                'message' => 'Não encontrei o ' . $endpoint,
+                'message' => 'Não encontrei o ' . $endpoint . '.',
             ]
         ];
     }
