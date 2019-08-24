@@ -64,7 +64,7 @@ class EventController extends Controller
             $this->event->create($request->all());
 
             return response()->json(
-                ApiMessage::messageInserOrUpdate('Evento'), 200
+                ApiMessage::messageInser('Evento'), 200
             );
 
         }catch (\Exception $exception) {
@@ -76,7 +76,7 @@ class EventController extends Controller
             }
 
             return response()->json(
-                ApiMessage::messageErrorServer(), 500
+                ApiMessage::messageErrorServer(), 400
             );
         }
     }
@@ -96,7 +96,7 @@ class EventController extends Controller
             $event->update($request->all());
 
             return response()->json(
-                ApiMessage::messageInserOrUpdate('Evento'), 200
+                ApiMessage::messageUpdate('Evento'), 200
             );
 
         }catch (\Exception $exception) {
@@ -108,7 +108,7 @@ class EventController extends Controller
             }
 
             return response()->json(
-                ApiMessage::messageErrorServer(), 500
+                ApiMessage::messageErrorServer(), 400
             );
         }
     }
@@ -138,7 +138,7 @@ class EventController extends Controller
             }
 
             return response()->json(
-                ApiMessage::messageErrorServer(), 500
+                ApiMessage::messageErrorServer(), 400
             );
         }
     }

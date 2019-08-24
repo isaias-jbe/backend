@@ -43,7 +43,7 @@ class UserController extends Controller
 
         if (!$user) {
             return response()->json(
-                ApiMessage::messageNotFound('Usuário')
+                ApiMessage::messageNotFound('Usuário'), 404
             );
         }
 
@@ -63,7 +63,7 @@ class UserController extends Controller
             $this->user->create($request->all());
 
             return response()->json(
-                ApiMessage::messageInserOrUpdate('Usuário'), 200
+                ApiMessage::messageInser('Usuário'), 200
             );
 
         } catch (\Exception $exception) {
@@ -75,7 +75,7 @@ class UserController extends Controller
             }
 
             return response()->json(
-                ApiMessage::messageErrorServer(), 5
+                ApiMessage::messageErrorServer(), 400
             );
         }
     }
@@ -95,7 +95,7 @@ class UserController extends Controller
             $user->update($user);
 
             return response()->json(
-                ApiMessage::messageInserOrUpdate('Usuário'), 200
+                ApiMessage::messageUpdate('Usuário'), 200
             );
 
         }catch (\Exception $exception) {
@@ -107,7 +107,7 @@ class UserController extends Controller
             }
 
             return response()->json(
-                ApiMessage::messageErrorServer(), 500
+                ApiMessage::messageErrorServer(), 400
             );
         }
     }
@@ -137,7 +137,7 @@ class UserController extends Controller
             }
 
             return response()->json(
-                ApiMessage::messageErrorServer(), 500
+                ApiMessage::messageErrorServer(), 400
             );
         }
     }
