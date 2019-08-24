@@ -64,14 +64,14 @@ class EventController extends Controller
             $this->event->create($request->all());
 
             return response()->json(
-                ApiMessage::messageInserOrUpdate('Evento'), 201
+                ApiMessage::messageInserOrUpdate('Evento'), 200
             );
 
         }catch (\Exception $exception) {
 
             if (config('app.debug')) {
                 return response()->json(
-                    ApiMessage::messageErrorDbug($exception->getMessage()), 500
+                    ApiMessage::messageErrorDebug($exception->getMessage()), 500
                 );
             }
 
@@ -103,7 +103,7 @@ class EventController extends Controller
 
             if (config('app.debug')) {
                 return response()->json(
-                    ApiMessage::messageErrorDbug($exception->getMessage()), 500
+                    ApiMessage::messageErrorDebug($exception->getMessage()), 500
                 );
             }
 
@@ -126,14 +126,14 @@ class EventController extends Controller
             $id->delete();
 
             return response()->json(
-                ApiMessage::messageDelete('Evento'), 201
+                ApiMessage::messageDelete('Evento'), 200
             );
 
         }catch (\Exception $exception) {
 
             if (config('app.debug')) {
                 return response()->json(
-                    ApiMessage::messageErrorDbug($exception->getMessage()), 500
+                    ApiMessage::messageErrorDebug($exception->getMessage()), 500
                 );
             }
 

@@ -2,10 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\API\ApiMessage;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    /**
+     * @var User
+     */
+    private $user;
+
+    /**
+     * UserController constructor.
+     * @param User $user
+     */
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +28,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json($this->user->paginate(5), 200);
     }
 
     /**
@@ -24,7 +39,15 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = $this->user->find($id);
+
+        if (!$user) {
+            return response()->json(
+                ApiMessage::messageNotFound('Usuário')
+            );
+        }
+
+        return response()->json(['data' => $user], 200);
     }
 
     /**
@@ -35,7 +58,26 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+
+            $this->user->create($request->all());
+
+            return response()->json(
+                ApiMessage::messageInserOrUpdate('Usuário'), 200
+            );
+
+        } catch (\Exception $exception) {
+
+            if (config('app.debug')) {
+                return response()->json(
+                    ApiMessage::messageErrorDbug($exception->getMessage()), 500
+                );
+            }
+
+            return response()->json(
+                ApiMessage::messageErrorServer(), 5
+            );
+        }
     }
 
     /**
@@ -47,7 +89,22 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $user = $this->user->find($id);
+            $user->update($user);
+
+        }catch (\Exception $exception) {
+
+            if (config('app.debug')) {
+                return response()->json(
+                    ApiMessage::messageErrorDebug($exception->getMessage()), 500
+                );
+            }
+
+            return response()->json(
+                ApiMessage::messageErrorServer(), 500
+            );
+        }
     }
 
     /**
@@ -56,8 +113,27 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function delete(User $id)
     {
-        //
+        try {
+
+            $id->delete();
+
+            return response()->json(
+                ApiMessage::messageDelete('Usuário'), 200
+            );
+
+        }catch (\Exception $exception) {
+
+            if (config('app.debug')) {
+                return response()->json(
+                    ApiMessage::messageErrorDebug($exception->getMessage()), 500
+                );
+            }
+
+            return response()->json(
+                ApiMessage::messageErrorServer(), 500
+            );
+        }
     }
 }

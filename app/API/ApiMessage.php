@@ -54,7 +54,7 @@ class ApiMessage
         ];
     }
 
-    public static function messageErrorDbug(String $message) : array
+    public static function messageErrorDebug(String $message) : array
     {
         return [
             'data' => [
