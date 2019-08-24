@@ -15,7 +15,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Administrador do Sistema',
             'email' => 'administrador@sistema.com.br',
             'birthday' => '27/04/1995',
-            'phone' => ' 85988887777',
+            'phone' => '85988887777',
             'password' => bcrypt('Imts@2019'),
         ]);
     }
