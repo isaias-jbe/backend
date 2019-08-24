@@ -90,8 +90,13 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         try {
+
             $user = $this->user->find($id);
             $user->update($user);
+
+            return response()->json(
+                ApiMessage::messageInserOrUpdate('Usuário'), 200
+            );
 
         }catch (\Exception $exception) {
 
