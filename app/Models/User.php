@@ -44,7 +44,7 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     /**
-     * Busca o valor da chave primária do registro
+     * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
      */
@@ -54,7 +54,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Metodo para declarações personalizadas
+     * Return a key value array, containing any custom claims to be added to the JWT.
      *
      * @return array
      */
@@ -68,10 +68,10 @@ class User extends Authenticatable implements JWTSubject
      *
      * @param $password
      */
-    public function setPasswordAttribute($password)
-    {
-        if (!empty($password)) {
-            $this->attributes['password'] = bcrypt($password);
-        }
-    }
+//    public function setPasswordAttribute($password)
+//    {
+//        if (!empty($password)) {
+//            $this->attributes['password'] = bcrypt($password);
+//        }
+//    }
 }

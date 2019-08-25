@@ -14,7 +14,7 @@ use PhpParser\Node\Scalar\String_;
 class ApiMessage
 {
     /**
-     * Message padrão para CREATE
+     * Messagem padrão para CREATE
      *
      * @param String $endpoint
      * @return array
@@ -23,14 +23,14 @@ class ApiMessage
     {
         return [
             "data" => [
-                'title' => 'Tudo certo!',
+                'title' => 'Pronto!',
                 'message' => $endpoint . ' inserido com sucesso.',
             ]
         ];
     }
 
     /**
-     * Message padrão para UPDATE
+     * Messagem padrão para UPDATE
      *
      * @param String $endpoint
      * @return array
@@ -39,14 +39,14 @@ class ApiMessage
     {
         return [
             "data" => [
-                'title' => 'Tudo certo!',
+                'title' => 'Pronto!',
                 'message' => $endpoint . ' atualizado com sucesso.',
             ]
         ];
     }
 
     /**
-     * Message padrão para DELETE
+     * Messagem padrão para DELETE
      *
      * @param String $endpoint
      * @return array
@@ -55,14 +55,14 @@ class ApiMessage
     {
         return [
             'data' => [
-                'title' => 'Tudo certo!',
+                'title' => 'Pronto!',
                 'message' => $endpoint . ' removido com sucesso.',
             ]
         ];
     }
 
     /**
-     * Message padrão para ENDPOINT não encontrados
+     * Messagem padrão para ENDPOINT não encontrados
      *
      * @param String $endpoint
      * @return array
@@ -78,7 +78,7 @@ class ApiMessage
     }
 
     /**
-     * Message padrão para ERROS NO SERVIDOR
+     * Messagem padrão para ERROS NO SERVIDOR
      *
      * @return array
      */
@@ -93,7 +93,7 @@ class ApiMessage
     }
 
     /**
-     * Message padrão para captura de DEBUG
+     * Messagem padrão para captura de DEBUG
      *
      * @param String $message
      * @return array
@@ -104,6 +104,36 @@ class ApiMessage
             'data' => [
                 'title' => 'Erro de Script!',
                 'message' => $message
+            ]
+        ];
+    }
+
+    /**
+     * Messagem padrão para TOKEN inválido
+     *
+     * @return array
+     */
+    public static function messageUnauthorized() : array
+    {
+        return [
+            'data' => [
+                'title' => 'Oops!',
+                'message' => 'Token inválido',
+            ]
+        ];
+    }
+
+    /**
+     * Messagem padrão para LOGOUT
+     *
+     * @return array
+     */
+    public static function messageLogout() : array
+    {
+        return [
+            'data' => [
+                'title' => 'Pronto!',
+                'message' => 'Usuário deslogado!',
             ]
         ];
     }

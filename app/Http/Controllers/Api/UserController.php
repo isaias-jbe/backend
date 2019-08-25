@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\User;
 use App\API\ApiMessage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\repositories\Contracts\UserRepositoryInterface;
 
 class UserController extends Controller
 {
     /**
      * @var User
      */
-    private $user;
+    private $repository;
 
     /**
      * UserController constructor.
-     * @param User $user
+     * @param User $repository
      */
-    public function __construct(User $user)
+    public function __construct(UserRepositoryInterface $repository)
     {
-        $this->user = $user;
+        $this->repository = $repository;
     }
 
     /**
@@ -30,7 +30,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return response()->json($this->user->paginate(5), 200);
+        return response()->json($this->repository->paginate(5), 200);
     }
 
     /**
@@ -41,15 +41,15 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = $this->user->find($id);
+        $repository = $this->repository->findById($id);
 
-        if (!$user) {
+        if (! $repository) {
             return response()->json(
                 ApiMessage::messageNotFound('Usuário'), 404
             );
         }
 
-        return response()->json(['data' => $user], 200);
+        return response()->json(['data' => $repository], 200);
     }
 
     /**
@@ -63,7 +63,7 @@ class UserController extends Controller
         try {
 
             $request['password'] = bcrypt($request->input('password'));
-            $this->user->create($request->all());
+            $this->repository->store($request->all());
 
             return response()->json(
                 ApiMessage::messageInser('Usuário'), 200
@@ -94,15 +94,15 @@ class UserController extends Controller
     {
         try {
 
-            $user = $this->user->find($id);
+            $repository = $this->repository->findById($id);
 
-            if (!$user) {
+            if (!$repository) {
                 return response()->json(
                     ApiMessage::messageNotFound('Usuário'), 404
                 );
             }
 
-            $user->update($request->all());
+            $repository->update($request->all());
 
             return response()->json(
                 ApiMessage::messageUpdate('Usuário'), 200
@@ -128,19 +128,19 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function destroy($id)
     {
         try {
 
-            $user = $this->user->find($id);
+            $repository = $this->repository->findById($id);
 
-            if (!$user) {
+            if (!$repository) {
                 return response()->json(
                     ApiMessage::messageNotFound('Usuário'), 404
                 );
             }
 
-            $user->delete();
+            $repository->destroy();
 
             return response()->json(
                 ApiMessage::messageDelete('Usuário'), 200

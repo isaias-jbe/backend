@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Event;
 use App\API\ApiMessage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\repositories\Contracts\EventRepositoryInterface;
 
 class EventController extends Controller
 {
     /**
      * @var Event
      */
-    private $event;
+    private $repository;
 
     /**
      * EventController constructor.
-     * @param Event $event
+     * @param Event $repository
      */
-    public function __construct(Event $event)
+    public function __construct(EventRepositoryInterface $repository)
     {
-        $this->event = $event;
+        $this->repository = $repository;
     }
 
     /**
@@ -30,7 +30,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        return response()->json($this->event->paginate(5), 200);
+        return response()->json($this->repository->paginate(5), 200);
     }
 
     /**
@@ -41,15 +41,15 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        $event = $this->event->find($id);
+        $repository = $this->repository->findById($id);
 
-        if (!$event) {
+        if (! $repository) {
             return response()->json(
                 ApiMessage::messageNotFound('Evento'), 404
             );
         }
 
-        return response()->json(['data' => $event], 200);
+        return response()->json(['data' => $repository], 200);
     }
 
     /**
@@ -62,7 +62,7 @@ class EventController extends Controller
     {
         try {
 
-            $this->event->create($request->all());
+            $this->repository->store($request->all());
 
             return response()->json(
                 ApiMessage::messageInser('Evento'), 200
@@ -93,15 +93,15 @@ class EventController extends Controller
     {
         try {
 
-            $event = $this->event->find($id);
+            $repository = $this->repository->findById($id);
 
-            if (!$event) {
+            if (! $repository) {
                 return response()->json(
                     ApiMessage::messageNotFound('Evento'), 404
                 );
             }
 
-            $event->update($request->all());
+            $repository->update($request->all());
 
             return response()->json(
                 ApiMessage::messageUpdate('Evento'), 200
@@ -127,11 +127,12 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete(Event $id)
+    public function destroy($id)
     {
         try {
 
-            $id->delete();
+            $repository = $this->repository->findById($id);
+            $repository->delete();
 
             return response()->json(
                 ApiMessage::messageDelete('Evento'), 200
