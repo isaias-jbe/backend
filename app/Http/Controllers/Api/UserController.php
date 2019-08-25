@@ -94,15 +94,11 @@ class UserController extends Controller
     {
         try {
 
-            $repository = $this->repository->findById($id);
-
-            if (!$repository) {
+            if (! $this->repository->findById($id, $request->all())) {
                 return response()->json(
                     ApiMessage::messageNotFound('Usuário'), 404
                 );
             }
-
-            $repository->update($request->all());
 
             return response()->json(
                 ApiMessage::messageUpdate('Usuário'), 200
@@ -132,15 +128,11 @@ class UserController extends Controller
     {
         try {
 
-            $repository = $this->repository->findById($id);
-
-            if (!$repository) {
+            if (! $this->repository->destroy($id)) {
                 return response()->json(
                     ApiMessage::messageNotFound('Usuário'), 404
                 );
             }
-
-            $repository->destroy();
 
             return response()->json(
                 ApiMessage::messageDelete('Usuário'), 200

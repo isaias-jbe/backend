@@ -93,15 +93,11 @@ class EventController extends Controller
     {
         try {
 
-            $repository = $this->repository->findById($id);
-
-            if (! $repository) {
+            if (! $this->repository->update($id, $request->all())) {
                 return response()->json(
                     ApiMessage::messageNotFound('Evento'), 404
                 );
             }
-
-            $repository->update($request->all());
 
             return response()->json(
                 ApiMessage::messageUpdate('Evento'), 200
@@ -131,8 +127,11 @@ class EventController extends Controller
     {
         try {
 
-            $repository = $this->repository->findById($id);
-            $repository->delete();
+            if (! $this->repository->destroy($id)) {
+                return response()->json(
+                    ApiMessage::messageNotFound('Evento'), 404
+                );
+            }
 
             return response()->json(
                 ApiMessage::messageDelete('Evento'), 200
